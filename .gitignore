@@ -1,2 +1,7 @@
 ## resnet weights
 /data/imagenet_weights/
+
+## logs
+**/__pycache__
+**/log
+logs/

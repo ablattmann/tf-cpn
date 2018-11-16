@@ -8,7 +8,7 @@ import cv2
 
 import sys
 cur_dir = os.path.dirname(__file__)
-sys.path.insert(0, os.path.join(cur_dir, 'MSCOCO', 'PythonAPI'))
+sys.path.insert(0, os.path.join(os.getenv('HOME'),'master_thesis','code', 'data', 'COCO' ,'cocoapi','pythonAPI'))
 from pycocotools.coco import COCO
 
 class COCOJoints(object):
@@ -21,12 +21,13 @@ class COCOJoints(object):
 
         self.mpi = []
         self.test_mpi = []
+        root_dir = os.path.join(cur_dir,'..', '..','..','..')
         for mpi, stage in zip([self.mpi, self.test_mpi], ['train', 'val']):
             if stage == 'train':
-                self._train_gt_path=os.path.join(cur_dir, 'MSCOCO', 'annotations', 'person_keypoints_trainvalminusminival2014.json')
+                self._train_gt_path=os.path.join(root_dir,  'data', 'COCO', 'annotations', 'person_keypoints_train2017.json')
                 coco = COCO(self._train_gt_path)
             else:
-                self._val_gt_path=os.path.join(cur_dir, 'MSCOCO', 'annotations', 'person_keypoints_minival2014.json')
+                self._val_gt_path=os.path.join(root_dir, 'data', 'COCO','annotations', 'person_keypoints_val2017.json')
                 coco = COCO(self._val_gt_path)
             if stage == 'train':
                 for aid in coco.anns.keys():
@@ -42,13 +43,13 @@ class COCOJoints(object):
                     bbox = ann['bbox']
                     if np.sum(joints[2::3]) == 0 or ann['num_keypoints'] == 0 :
                         continue
-                    imgname = prefix + '2014/' + 'COCO_' + prefix + '2014' + '_' + str(ann['image_id']).zfill(12) + '.jpg'
+                    imgname = prefix + '2017/' + str(ann['image_id']).zfill(12) + '.jpg'
                     humanData = dict(aid = aid,joints=joints, imgpath=imgname, headRect=rect, bbox=bbox, imgid = ann['image_id'], segmentation = ann['segmentation'])
                     mpi.append(humanData)
             elif stage == 'val':
                 files = [(img_id,coco.imgs[img_id]) for img_id in coco.imgs]
                 for img_id,img_info in files:
-                    imgname = stage + '2014/' + img_info['file_name']
+                    imgname = stage + '2017/' + img_info['file_name']
                     humanData = dict(imgid = img_id,imgpath = imgname)
                     mpi.append(humanData)
             else:

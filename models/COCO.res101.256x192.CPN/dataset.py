@@ -168,6 +168,7 @@ def Preprocessing(d, stage='train'):
         segms = []
 
     vis = False
+    print(os.path.join(cfg.img_path, d['imgpath']))
     img = cv2.imread(os.path.join(cfg.img_path, d['imgpath']))
     #hack(multiprocessing data provider)
     while img is None:
