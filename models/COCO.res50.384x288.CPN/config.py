@@ -82,7 +82,7 @@ class Config:
 
 cfg = Config()
 
-sys.path.insert(0, osp.join(cfg.root_dir, 'lib'))
+sys.path.insert(0, osp.join(cfg.root_dir, 'net_lib'))
 from tfflat.utils import add_pypath, make_link, make_dir
 add_pypath(osp.join(cfg.root_dir, 'data'))
 add_pypath(osp.join(cfg.root_dir, 'data', 'COCO'))
